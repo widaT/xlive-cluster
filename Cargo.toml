@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "xlive-core",
+    "xlive-origin",
+    "xlive-edge",
+    "xlive-cache",
+    "xlive-monitor",
+    "xlive-register",
+]

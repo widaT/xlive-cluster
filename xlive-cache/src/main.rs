@@ -65,7 +65,7 @@ async fn main() -> Result<()> {
     let listener = TcpListener::bind("0.0.0.0:9888").await?;
     log::info!(
         "xilve cache service is running,Listening for connections on {}",
-        "0.0.0.0:9888"
+        listener.local_addr()?
     );
     let mut count: u32 = 0;
     loop {

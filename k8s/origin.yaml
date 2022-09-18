@@ -1,0 +1,35 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: xlive-origin
+spec:
+  selector:
+    matchLabels:
+      app: xlive-origin
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: xlive-origin
+    spec:
+      containers:
+        - name: xlive-origin
+          image: wida/xlive-origin
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9888
+              name: service
+            - containerPort: 3032
+              name: monitor
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: xlive-origin-svc
+spec:
+  selector:
+    app: xlive-origin
+  ports:
+    - port: 9888
+      targetPort: 9888
+  type: LoadBalancer

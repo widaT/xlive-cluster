@@ -54,7 +54,7 @@ async fn main() -> Result<()> {
     let listener = TcpListener::bind("0.0.0.0:9878").await?;
     log::info!(
         "xilve origin service is running,Listening for connections on {}",
-        "0.0.0.0:9878"
+        listener.local_addr()?
     );
     let mut count: u32 = 0;
     loop {

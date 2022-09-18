@@ -1,0 +1,35 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: xlive-cache
+spec:
+  selector:
+    matchLabels:
+      app: xlive-cache
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: xlive-cache
+    spec:
+      containers:
+        - name: xlive-cache
+          image: wida/xlive-cache
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9878
+              name: service
+            - containerPort: 3032
+              name: monitor
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: xlive-cache-svc
+spec:
+  selector:
+    app: xlive-cache
+  ports:
+    - port: 9878
+      targetPort: 9878
+  type: LoadBalancer

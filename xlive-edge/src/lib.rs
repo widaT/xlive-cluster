@@ -9,9 +9,6 @@ pub mod manager;
 #[cfg(feature = "http-flv")]
 pub mod http_flv;
 
-#[cfg(feature = "ts")]
-mod transport_stream;
-
 #[cfg(feature = "monitor")]
 pub mod monitor;
 

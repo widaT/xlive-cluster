@@ -15,9 +15,11 @@ spec:
       containers:
         - name: xlive-cache
           image: wida/xlive-cache
+          command: ["xlive-cache"]
+          args: ["-r", "xlive-register-svc:9336"]
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 9878
+            - containerPort: 9888
               name: service
             - containerPort: 3032
               name: monitor
@@ -30,6 +32,10 @@ spec:
   selector:
     app: xlive-cache
   ports:
-    - port: 9878
-      targetPort: 9878
+    - port: 9888
+      name: service
+      targetPort: 9888
+    - port: 3032
+      name: monitor
+      targetPort: 3032
   type: LoadBalancer

@@ -1,0 +1,46 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: xlive-edge
+spec:
+  selector:
+    matchLabels:
+      app: xlive-edge
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: xlive-edge
+    spec:
+      containers:
+        - name: xlive-edge
+          image: wida/xlive-edge
+          command: ["xlive-edge"]
+          args: ["-c", "xlive-cache-svc:9888","-o","xlive-origin-svc:9878"]
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 1935
+              name: rtmp-service
+            - containerPort: 3000
+              name: httpflv
+            - containerPort: 3032
+              name: monitor
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: xlive-edge-svc
+spec:
+  selector:
+    app: xlive-edge
+  ports:
+    - port: 1935
+      name: rtmp-service
+      targetPort: 1935
+    - port: 3000
+      name: httpflv
+      targetPort: 3000
+    - port: 3032
+      name: monitor
+      targetPort: 3032
+  type: LoadBalancer

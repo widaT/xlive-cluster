@@ -19,6 +19,8 @@ spec:
           ports:
             - containerPort: 9336
               protocol: UDP
+            - containerPort: 3032
+              name: monitor
 ---
 kind: Service
 apiVersion: v1

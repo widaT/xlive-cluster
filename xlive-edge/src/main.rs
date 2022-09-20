@@ -14,11 +14,14 @@ use xlive_edge::service::Service;
 #[derive(Debug, StructOpt)]
 #[structopt(name = "xlive-edge")]
 struct Opt {
-    #[structopt(short = "r", long = "register", default_value = "127.0.0.1:9336")]
+    #[structopt(short = "r", long = "register", default_value = "")]
     register: String,
 
-    #[structopt(short = "o", long = "origin", default_value = "127.0.0.1:9878")]
+    #[structopt(short = "o", long = "origin", default_value="127.0.0.1:9878")]
     origin: String,
+
+    #[structopt(short = "c", long = "cache", default_value="")]
+    cache: String,
 
     #[structopt(short = "b", long = "bind", default_value = "[::]:1935")]
     bind: String,
@@ -43,10 +46,16 @@ async fn main() -> Result<()> {
     let opt = Opt::from_args();
     log::info!("{:?}", opt);
 
-    let mut upstream: Option<Upstream> = None;
+    if opt.origin == "" {
+        panic!("origin is empty")
+    }
+
+    let upstream;
     if opt.register != "" {
         upstream = Some(Upstream::Register(opt.register));
-    } else if opt.origin != "" {
+    } else if opt.cache  !=""{
+        upstream = Some(Upstream::Addr(opt.cache.clone()));
+    }else {
         upstream = Some(Upstream::Addr(opt.origin.clone()));
     }
 

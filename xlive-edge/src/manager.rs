@@ -114,6 +114,7 @@ impl Manager {
                         }
                         Upstream::Addr(a) => a.clone(),
                     };
+                    log::info!("upstream add {}",addr);
                     let stream = TcpStream::connect(addr).await?;
                     let mut frame = Framed::new(stream, LengthDelimitedCodec::new());
                     frame

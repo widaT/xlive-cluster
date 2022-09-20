@@ -15,9 +15,11 @@ spec:
       containers:
         - name: xlive-origin
           image: wida/xlive-origin
+          command: ["xlive-origin"]
+          args: ["-r", "xlive-register-svc:9336"]
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 9888
+            - containerPort: 9878
               name: service
             - containerPort: 3032
               name: monitor
@@ -30,6 +32,10 @@ spec:
   selector:
     app: xlive-origin
   ports:
-    - port: 9888
-      targetPort: 9888
+    - port: 9878
+      name: service
+      targetPort: 9878
+    - port: 3032
+      name: monitor
+      targetPort: 3032
   type: LoadBalancer

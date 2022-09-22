@@ -1,39 +1,33 @@
+use std::collections::HashMap;
+use tokio::sync::mpsc::UnboundedReceiver;
+use crate::IncomingMessage;
 use anyhow::Result;
-use hyper::service::{make_service_fn, service_fn};
-use hyper::{Body, Request, Response, Server, StatusCode};
-use std::convert::Infallible;
-async fn monitor(req: Request<Body>) -> Result<Response<Body>> {
-    let path = req.uri().path();
 
-    if path.is_empty() || !path.eq("/monitor") {
-        return Ok(Response::builder()
-            .status(StatusCode::NOT_FOUND)
-            .body(Body::empty())
-            .unwrap());
-    }
-
-    //comming soon
-
-    let mut res = Response::new(Body::from(""));
-    res.headers_mut()
-        .insert("Access-Control-Allow-Origin", "*".parse().unwrap());
-    Ok(res)
+pub struct Monitor {
+    state: HashMap<String, HashMap<String, usize>>,
+    incoming: UnboundedReceiver<IncomingMessage>,
 }
 
-pub struct Service {}
-
-impl Service {
-    pub fn new() -> Self {
-        Self {}
+impl Monitor {
+    pub fn new(incoming: UnboundedReceiver<IncomingMessage>) -> Self {
+        Self {
+            state: HashMap::new(),
+            incoming,
+        }
     }
 
-    pub async fn run(&self) {
-        let make_service = make_service_fn(move |_| async move {
-            Ok::<_, Infallible>(service_fn(move |req| monitor(req)))
-        });
-        let addr = "[::]:3033".parse().unwrap();
-        let server = Server::bind(&addr).serve(make_service);
-        log::info!("monitor http service Listening on http://{}", addr);
-        _ = server.await;
+    pub async fn run(&mut self) -> Result<()> {
+        while let Some(msg) = self.incoming.recv().await {
+            match msg {
+                IncomingMessage::TaskMsg((name, value)) => {
+                    self.state.insert(name, value);
+                }
+                IncomingMessage::Oneshot(sender) => {
+                    let value = serde_json::json!(self.state);
+                    _ = sender.send(value);
+                }
+            }
+        }
+        Ok(())
     }
 }

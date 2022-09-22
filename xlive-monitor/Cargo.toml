@@ -17,7 +17,7 @@ chrono="*"
 serde = { version = "^1.0", features = ["derive"] }
 serde_json = {version="^1.0"}
 hyper = { version = "0.14", features = ["stream", "server", "http1", "http2", "tcp", "client"]}
-
+reqwest = { version = "0.11", features = ["json"] }
 
 [[bin]]
 name="xlive-monitor"

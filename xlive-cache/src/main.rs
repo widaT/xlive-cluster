@@ -39,9 +39,9 @@ async fn main() -> Result<()> {
     log::info!("{:?}", opt);
 
     let mut upstream: Option<Upstream> = None;
-    if opt.register != "" {
+    if !opt.register.is_empty() {
         upstream = Some(Upstream::Register(opt.register));
-    } else if opt.origin != "" {
+    } else if !opt.origin.is_empty() {
         upstream = Some(Upstream::Addr(opt.origin));
     }
 

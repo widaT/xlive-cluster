@@ -1,4 +1,4 @@
-#[warn(unused_mut)]
+#![warn(unused_mut)]
 use anyhow::Result;
 use chrono::Local;
 use core::Upstream;
@@ -17,10 +17,10 @@ struct Opt {
     #[structopt(short = "r", long = "register", default_value = "")]
     register: String,
 
-    #[structopt(short = "o", long = "origin", default_value="127.0.0.1:9878")]
+    #[structopt(short = "o", long = "origin", default_value = "127.0.0.1:9878")]
     origin: String,
 
-    #[structopt(short = "c", long = "cache", default_value="")]
+    #[structopt(short = "c", long = "cache", default_value = "")]
     cache: String,
 
     #[structopt(short = "b", long = "bind", default_value = "[::]:1935")]
@@ -46,16 +46,16 @@ async fn main() -> Result<()> {
     let opt = Opt::from_args();
     log::info!("{:?}", opt);
 
-    if opt.origin == "" {
+    if opt.origin.is_empty() {
         panic!("origin is empty")
     }
 
     let upstream;
-    if opt.register != "" {
+    if !opt.register.is_empty() {
         upstream = Some(Upstream::Register(opt.register));
-    } else if opt.cache  !=""{
+    } else if !opt.cache.is_empty() {
         upstream = Some(Upstream::Addr(opt.cache.clone()));
-    }else {
+    } else {
         upstream = Some(Upstream::Addr(opt.origin.clone()));
     }
 

@@ -70,15 +70,16 @@ impl Manager {
                         .map_err(|e| log::error!("{:?}", e));
                 });
 
-                if let Err(_) = responder.send(handle) {
+                if responder.send(handle).is_err() {
                     bail!("Failed to send response");
                 }
             }
             ChannelMessage::Join((name, responder)) => {
                 let sessions = self.channels.read().await;
                 if let Some((handle, watcher)) = sessions.get(&name) {
-                    if let Err(_) =
-                        responder.send(JoinResp::Local(handle.clone(), watcher.subscribe()))
+                    if responder
+                        .send(JoinResp::Local(handle.clone(), watcher.subscribe()))
+                        .is_err()
                     {
                         bail!("Failed to send response");
                     }
@@ -114,7 +115,7 @@ impl Manager {
                         }
                         Upstream::Addr(a) => a.clone(),
                     };
-                    log::info!("upstream add {}",addr);
+                    log::info!("upstream add {}", addr);
                     let stream = TcpStream::connect(addr).await?;
                     let mut frame = Framed::new(stream, LengthDelimitedCodec::new());
                     frame
@@ -187,7 +188,10 @@ impl Manager {
                             Ok::<(), anyhow::Error>(())
                         });
 
-                        if let Err(_) = responder.send(JoinResp::Origin(handle.clone(), watcher)) {
+                        if responder
+                            .send(JoinResp::Origin(handle.clone(), watcher))
+                            .is_err()
+                        {
                             bail!("Failed to send response");
                         }
                     }

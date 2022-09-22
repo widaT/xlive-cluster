@@ -34,7 +34,7 @@ async fn main() -> Result<()> {
     let opt = Opt::from_args();
     log::info!("{:?}", opt);
 
-    let register = if opt.register == "" {
+    let register = if opt.register.is_empty() {
         None
     } else {
         Some(opt.register)

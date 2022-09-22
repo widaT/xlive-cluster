@@ -168,7 +168,10 @@ impl Manager {
                             Ok::<(), anyhow::Error>(())
                         });
 
-                        if let Err(_) = responder.send(JoinResp::Origin(handle.clone(), watcher)) {
+                        if responder
+                            .send(JoinResp::Origin(handle.clone(), watcher))
+                            .is_err()
+                        {
                             bail!("Failed to send response");
                         }
                     }

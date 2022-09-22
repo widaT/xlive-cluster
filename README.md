@@ -20,9 +20,9 @@
 
 `xlive-register`属于注册中心，每一个`publisher`都会注册，相当于每个时刻会有所有`publisher`的一个快照。
 
-### xlive-monitor（comming soon）
+### xlive-monitor（监控中心）
 
-`xlive-monitor`可以收集`xlive-origin`，`xlive-edge`，`xilve-cache`的`publisher`和各层级的`player`数量，未调度算法提供更多依据。
+`xlive-monitor`可以收集`xlive-origin`，`xlive-edge`，`xilve-cache`的`publisher`和各层级的`player`数量，为调度算法提供更多依据。
 
 ## 架构示意图
 

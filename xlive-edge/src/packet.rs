@@ -158,7 +158,7 @@ impl TryFrom<&[u8]> for Packet {
     type Error = anyhow::Error;
 
     fn try_from(val: &[u8]) -> Result<Self, Self::Error> {
-        Packet::unpack(&val)
+        Packet::unpack(val)
     }
 }
 
@@ -174,7 +174,7 @@ impl Metadata {
         K: AsRef<str>,
         V: FromStr,
     {
-        self.0.get(key.as_ref()).map(|v| v.parse().ok()).flatten()
+        self.0.get(key.as_ref()).and_then(|v| v.parse().ok())
     }
 }
 
@@ -301,15 +301,15 @@ pub(crate) fn into_metadata(val: Metadata) -> StreamMetadata {
 
 fn is_video_sequence_header(data: &Bytes) -> bool {
     // This is assuming h264 h265
-    return data.len() >= 2 && data[1] == 0x00;
+    data.len() >= 2 && data[1] == 0x00
 }
 
 fn is_audio_sequence_header(data: &Bytes) -> bool {
     // This is assuming aac
-    return data.len() >= 2 && data[0] == 0xaf && data[1] == 0x00;
+    data.len() >= 2 && data[0] == 0xaf && data[1] == 0x00
 }
 
 fn is_video_keyframe(data: &Bytes) -> bool {
     // assumings h264 h265
-    return data.len() >= 2 && (data[0] == 0x17 || data[0] == 0x1c);
+    data.len() >= 2 && (data[0] == 0x17 || data[0] == 0x1c)
 }

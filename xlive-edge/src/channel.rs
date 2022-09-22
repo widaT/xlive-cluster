@@ -64,7 +64,7 @@ impl Channel {
                     bail!("Failed to set channel cache {}", e);
                 }
 
-                let media_packet = MediaPacket::from(packet.clone());
+                let media_packet = packet.clone();
                 match self
                     .frame
                     .as_mut()
@@ -119,8 +119,7 @@ impl Channel {
                 if packet.is_seq_header && packet.is_key_frame {
                     self.video_seq_header = Some(packet.clone());
                 } else if !packet.is_seq_header && packet.is_key_frame {
-                    let mut pck = vec![];
-                    pck.push(packet.clone());
+                    let pck = vec![packet.clone()];
                     self.gop = Some(pck);
                 } else if self.full_gop {
                     if let Some(ref mut v) = self.gop {

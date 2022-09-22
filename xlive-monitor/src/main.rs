@@ -4,7 +4,7 @@ use xlive_monitor::monitor::Monitor;
 use std::io::Write;
 use tokio::sync::mpsc::unbounded_channel;
 use xlive_monitor::IncomingMessage;
-use xlive_monitor::{http_service::Service, splider::Task};
+use xlive_monitor::{http_service::Service, spider::Task};
 #[tokio::main]
 async fn main() -> Result<()> {
     let env = env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info");

@@ -1,10 +1,7 @@
 use crate::IncomingMessage;
 use anyhow::{Ok, Result};
 use std::{collections::HashMap, time::Duration};
-use tokio::{
-    sync::{mpsc::UnboundedSender},
-    time,
-};
+use tokio::{sync::mpsc::UnboundedSender, time};
 
 pub struct Task {
     outgoing: UnboundedSender<IncomingMessage>,

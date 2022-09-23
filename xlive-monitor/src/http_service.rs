@@ -1,9 +1,9 @@
+use crate::IncomingMessage;
 use anyhow::Result;
 use hyper::service::{make_service_fn, service_fn};
 use hyper::{Body, Request, Response, Server, StatusCode};
 use std::convert::Infallible;
 use tokio::sync::mpsc::UnboundedSender;
-use crate::IncomingMessage;
 use tokio::sync::oneshot;
 async fn monitor(
     handle: UnboundedSender<IncomingMessage>,
@@ -11,7 +11,7 @@ async fn monitor(
 ) -> Result<Response<Body>> {
     let path = req.uri().path();
 
-    if path.is_empty() || !path.eq("/monitor") {
+    if path.is_empty() || !path.eq("/info") {
         return Ok(Response::builder()
             .status(StatusCode::NOT_FOUND)
             .body(Body::empty())
@@ -39,7 +39,7 @@ impl Service {
         Self { handle }
     }
 
-    pub async fn run(&self) ->Result<()>{
+    pub async fn run(&self) -> Result<()> {
         let handle_cp = self.handle.clone();
         let make_service = make_service_fn(move |_| {
             let handle_cp = handle_cp.clone();

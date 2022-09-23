@@ -1,7 +1,7 @@
-use std::collections::HashMap;
-use tokio::sync::mpsc::UnboundedReceiver;
 use crate::IncomingMessage;
 use anyhow::Result;
+use std::collections::HashMap;
+use tokio::sync::mpsc::UnboundedReceiver;
 
 pub struct Monitor {
     state: HashMap<String, HashMap<String, usize>>,

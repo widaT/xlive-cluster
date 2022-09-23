@@ -1,0 +1,12 @@
+[[hosts]]
+name="origin_1"
+addr="192.168.1.1:3032"
+
+
+[[hosts]]
+name="origin_2"
+addr="192.168.2.2:3032"
+
+[[hosts]]
+name="cache_1"
+addr="192.168.3.3:3032"

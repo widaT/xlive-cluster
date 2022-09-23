@@ -1392,6 +1392,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "toml"
+version = "0.4.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "758664fc71a3a69038656bee8b6be6477d2a6c315a6b81f7081f591bffa4111f"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "tower-service"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1729,11 +1738,14 @@ dependencies = [
  "log",
  "reqwest",
  "serde",
+ "serde_derive",
  "serde_json",
+ "structopt",
  "thiserror",
  "tokio",
  "tokio-stream",
  "tokio-util 0.7.4",
+ "toml",
 ]
 
 [[package]]
